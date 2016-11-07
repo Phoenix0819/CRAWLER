@@ -1,9 +1,11 @@
 package pri.wf.crawler;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.KeyManagementException;
@@ -17,11 +19,15 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import com.google.gson.Gson;
+import com.mysql.cj.api.Session;
+
 import pri.wf.crawler.dto.QueryResultDto;
+import pri.wf.mybatis.StationDao;
 
 public class Main {
 
@@ -55,10 +61,29 @@ public class Main {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		String resource="config/mybatis-config.xml";
+		File file=new File(resource);
+		if (!file.exists()&&!file.isDirectory()) {
+			System.out.println("bucunzai");
+		} else {
+			System.out.println("cunzai");
+		}
+		Reader reader;
+		try {
+			reader=Resources.getResourceAsReader(resource);
+			System.out.println("reader"+reader.toString());
+			SqlSessionFactoryBuilder builder=new SqlSessionFactoryBuilder();
+			SqlSessionFactory factory=builder.build(reader);
+			SqlSession session=factory.openSession();
+			StationDao stationDao=session.getMapper(StationDao.class);
+			System.out.println(stationDao.countAll());
+			session.commit();
+			session.close();
+			
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		
-		String resource="config/mybatis-congfig.xml";
-		InputStream inputStream=Resources.getResourceAsStream(resource);
-		SqlSessionFactory=new SqlSessionFactoryBuilder().build(inputStream);
 
 	}
 
