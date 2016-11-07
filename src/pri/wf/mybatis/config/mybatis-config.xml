@@ -17,6 +17,7 @@
     </environment>
   </environments>
   <mappers>
-    <mapper resource="config/StationDaoMapper.xml"/>
+    <mapper resource="pri/wf/dto/station/StationDaoMapper.xml"/>
+    <mapper resource="pri/wf/crawler/dto/ScheduleDaoMapper.xml"/>
   </mappers>
 </configuration>

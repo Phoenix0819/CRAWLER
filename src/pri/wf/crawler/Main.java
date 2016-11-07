@@ -12,6 +12,8 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -24,19 +26,20 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import com.google.gson.Gson;
-import com.mysql.cj.api.Session;
 
 import pri.wf.crawler.dto.QueryResultDto;
-import pri.wf.mybatis.StationDao;
+import pri.wf.crawler.dto.ScheduleDao;
+import pri.wf.crawler.dto.SearchDto;
+import pri.wf.crawler.dto.TrainData;
+import pri.wf.dto.station.StationDao;
 
 public class Main {
 
 	public static void main(String[] args) {
-
-		String url = "https://kyfw.12306.cn/otn/leftTicket/queryX?leftTicketDTO.train_date=2016-11-07&leftTicketDTO.from_station=DLT&leftTicketDTO.to_station=SHH&purpose_codes=ADULT";
+		String url = "https://kyfw.12306.cn/otn/leftTicket/queryX?leftTicketDTO.train_date=2016-11-10&leftTicketDTO.from_station=DLT&leftTicketDTO.to_station=SHH&purpose_codes=ADULT";
 		String charset = "UTF-8";
 		URL urlObj;
-
+		QueryResultDto queryResultDto = new QueryResultDto();
 		try {
 			urlObj = new URL(url);
 			HttpsURLConnection connection = (HttpsURLConnection) urlObj.openConnection();
@@ -46,44 +49,42 @@ public class Main {
 			try (BufferedReader br = new BufferedReader(new InputStreamReader(response, charset))) {
 				String input;
 				StringBuffer result = new StringBuffer();
-				while ((input = br.readLine()) != null) {
+				while ((input = br.readLine()) != null)
+				{
 					result.append(input);
 				}
 				System.out.println(result);
 
 				Gson gson = new Gson();
-				QueryResultDto queryResultDto = new QueryResultDto();
-				 queryResultDto=gson.fromJson(result.toString(),
-				 QueryResultDto.class);
+				
+				queryResultDto = gson.fromJson(result.toString(), QueryResultDto.class);
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		String resource="config/mybatis-config.xml";
-		File file=new File(resource);
-		if (!file.exists()&&!file.isDirectory()) {
-			System.out.println("bucunzai");
-		} else {
-			System.out.println("cunzai");
-		}
+		String resource = "pri/wf/mybatis/config/mybatis-config.xml";
 		Reader reader;
 		try {
-			reader=Resources.getResourceAsReader(resource);
-			System.out.println("reader"+reader.toString());
-			SqlSessionFactoryBuilder builder=new SqlSessionFactoryBuilder();
-			SqlSessionFactory factory=builder.build(reader);
-			SqlSession session=factory.openSession();
-			StationDao stationDao=session.getMapper(StationDao.class);
-			System.out.println(stationDao.countAll());
+			reader = Resources.getResourceAsReader(resource);
+			System.out.println("reader" + reader.toString());
+			SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
+			SqlSessionFactory factory = builder.build(reader);
+			SqlSession session = factory.openSession();
+			ScheduleDao ScheduleDao=session.getMapper(ScheduleDao.class);
+			List<SearchDto> searchDtos=queryResultDto.getData();
+			for (SearchDto searchData : searchDtos) {
+				TrainData trainData=searchData.getQueryLeftNewDTO();
+				ScheduleDao.insert(trainData);
+				System.out.println(trainData.getTrain_no());
+			}
 			session.commit();
 			session.close();
-			
+
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		
 
 	}
 
