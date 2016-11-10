@@ -1,6 +1,6 @@
-package pri.wf.dto.station;
+package pri.wf.crawler.dto;
 
-public class Station {
+public class StationDto {
 	private int id;
 	private String code;
 	private String name;

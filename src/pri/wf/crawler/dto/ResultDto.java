@@ -2,16 +2,16 @@ package pri.wf.crawler.dto;
 
 import java.util.List;
 
-public class QueryResultDto {
+public class ResultDto {
 	private String validateMessagesShowId;
 	private Boolean status;
 	private int httpstatus;
 	private List<String> messages;
-	private List<SearchDto> data;
-	public List<SearchDto> getData() {
+	private List<ResultQueDto> data;
+	public List<ResultQueDto> getData() {
 		return data;
 	}
-	public void setData(List<SearchDto> data) {
+	public void setData(List<ResultQueDto> data) {
 		this.data = data;
 	}
 	public String getValidateMessagesShowId() {

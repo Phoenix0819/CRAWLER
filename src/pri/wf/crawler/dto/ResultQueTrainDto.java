@@ -1,6 +1,6 @@
 package pri.wf.crawler.dto;
 
-public class TrainData {
+public class ResultQueTrainDto {
 	private String train_no;
 	private String station_train_code;
 	private String start_station_telecode;
@@ -15,6 +15,7 @@ public class TrainData {
 	private String arrive_time;
 	private String lishi;
 	private String lishiValue;
+
 	public String getTrain_no() {
 		return train_no;
 	}

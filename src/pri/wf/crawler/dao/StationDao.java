@@ -1,4 +1,4 @@
-package pri.wf.dto.station;
+package pri.wf.crawler.dao;
 
 public interface StationDao {
 	public int  countAll() ;

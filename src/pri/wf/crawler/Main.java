@@ -27,19 +27,20 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import com.google.gson.Gson;
 
-import pri.wf.crawler.dto.QueryResultDto;
-import pri.wf.crawler.dto.ScheduleDao;
-import pri.wf.crawler.dto.SearchDto;
-import pri.wf.crawler.dto.TrainData;
-import pri.wf.dto.station.StationDao;
+import pri.wf.crawler.dao.TrainDataDao;
+import pri.wf.crawler.dao.StationDao;
+import pri.wf.crawler.dto.ResultDto;
+import pri.wf.crawler.dto.ResultQueDto;
+import pri.wf.crawler.dto.ResultQueTrainDto;
+import pri.wf.crawler.service.ResultService;
 
 public class Main {
 
 	public static void main(String[] args) {
-		String url = "https://kyfw.12306.cn/otn/leftTicket/queryX?leftTicketDTO.train_date=2016-11-10&leftTicketDTO.from_station=DLT&leftTicketDTO.to_station=SHH&purpose_codes=ADULT";
+		String url = "https://kyfw.12306.cn/otn/leftTicket/queryX?leftTicketDTO.train_date=2016-11-17&leftTicketDTO.from_station=DLT&leftTicketDTO.to_station=SHH&purpose_codes=ADULT";
 		String charset = "UTF-8";
 		URL urlObj;
-		QueryResultDto queryResultDto = new QueryResultDto();
+		ResultDto resultDto = new ResultDto();
 		try {
 			urlObj = new URL(url);
 			HttpsURLConnection connection = (HttpsURLConnection) urlObj.openConnection();
@@ -57,36 +58,21 @@ public class Main {
 
 				Gson gson = new Gson();
 				
-				queryResultDto = gson.fromJson(result.toString(), QueryResultDto.class);
+				resultDto = gson.fromJson(result.toString(), ResultDto.class);
+				System.out.println(resultDto.getHttpstatus());
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		String resource = "pri/wf/mybatis/config/mybatis-config.xml";
-		Reader reader;
-		try {
-			reader = Resources.getResourceAsReader(resource);
-			System.out.println("reader" + reader.toString());
-			SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
-			SqlSessionFactory factory = builder.build(reader);
-			SqlSession session = factory.openSession();
-			ScheduleDao ScheduleDao=session.getMapper(ScheduleDao.class);
-			List<SearchDto> searchDtos=queryResultDto.getData();
-			for (SearchDto searchData : searchDtos) {
-				TrainData trainData=searchData.getQueryLeftNewDTO();
-				ScheduleDao.insert(trainData);
-				System.out.println(trainData.getTrain_no());
-			}
-			session.commit();
-			session.close();
-
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
+		if (resultDto!=null) {
+			ResultService resultService=new ResultService();
+			resultService.resultAdd(resultDto);
+		} 
 	}
+
+
 
 	public static void doTrustToCertificates(HttpsURLConnection connection) {
 
