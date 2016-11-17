@@ -18,11 +18,11 @@ import javax.net.ssl.X509TrustManager;
 
 import com.google.gson.Gson;
 
-public class Query<TDto> {
-	TDto resultType;
+public class Query {
 
-	public TDto QueryByUrl(String url,TDto resultSet) {
+	public StringBuffer QueryByUrl(String url) {
 		String charset = "UTF-8";
+		StringBuffer result = new StringBuffer();
 		URL urlObj;
 		try {
 			urlObj = new URL(url);
@@ -32,26 +32,19 @@ public class Query<TDto> {
 			InputStream response = connection.getInputStream();
 			try (BufferedReader br = new BufferedReader(new InputStreamReader(response, charset))) {
 				String input;
-				StringBuffer result = new StringBuffer();
 				while ((input = br.readLine()) != null) {
 					result.append(input);
 				}
 				System.out.println(result);
-				Gson gson = new Gson();
-				resultSet = gson.fromJson(result.toString(), resultSet.getClass());
-				
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} 
-		if (resultSet != null) {
-			/*ResultService resultService = new ResultService();
-			resultService.resultAdd(result);*/
-			return  resultSet;
 		}
-		return null;
+		return result; 
+		
+		
 	}
 
 	public static void doTrustToCertificates(HttpsURLConnection connection) {

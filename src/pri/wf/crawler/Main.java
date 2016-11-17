@@ -13,9 +13,9 @@ public class Main {
 		List<StationDto> stationDtos=new StationService().stationList();
 		String trainListUrl="https://kyfw.12306.cn/otn/resources/js/query/train_list.js";
 		String url="https://kyfw.12306.cn/otn/leftTicket/queryX?leftTicketDTO.train_date=2016-11-20&leftTicketDTO.from_station=SHH&leftTicketDTO.to_station=LYT&purpose_codes=ADULT";
-		Query<ResultDto> queryUrl=new Query<ResultDto>();
+		StringBuffer resultJson=new Query().QueryByUrl(url);
 		ResultDto resultDto=new ResultDto();
-		resultDto=queryUrl.QueryByUrl(url,resultDto);
+		resultDto=new FormatData<ResultDto>().JsontoObj(resultJson, resultDto);
 		if (resultDto!=null) {
 			ResultService resultService=new ResultService();
 			resultService.resultAdd(resultDto);
@@ -45,10 +45,6 @@ public class Main {
 				} 
 			}
 		}*/
-		//System.out.println(sum);
-		/*String url = "https://kyfw.12306.cn/otn/leftTicket/queryX?leftTicketDTO.train_date=2016-11-17&leftTicketDTO.from_station=DLT&leftTicketDTO.to_station=SHH&purpose_codes=ADULT";
-		String liaoyang="https://kyfw.12306.cn/otn/leftTicket/queryX?leftTicketDTO.train_date=2016-11-20&leftTicketDTO.from_station=SHH&leftTicketDTO.to_station=LYT&purpose_codes=ADULT";
-		String urlnull="https://kyfw.12306.cn/otn/leftTicket/queryX?leftTicketDTO.train_date=2016-11-20&leftTicketDTO.from_station=CWQ&leftTicketDTO.to_station=JOL&purpose_codes=ADULT";*/
 	
 	}
 }
