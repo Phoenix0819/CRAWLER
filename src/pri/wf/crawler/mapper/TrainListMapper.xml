@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pri.wf.crawler.dao.TrainListDao">
+	<insert id="insert" parameterType="pri.wf.crawler.entity.TrainListEntity">
+        insert into   tb_trainList(station_train_code,train_no,start_station_name,end_station_name) 
+        values(#{station_train_code},#{train_no},#{start_station_name},
+        #{end_station_name})
+    </insert>
+</mapper>

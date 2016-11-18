@@ -12,7 +12,8 @@ import org.modelmapper.ModelMapper;
 
 import pri.wf.crawler.FormatData;
 import pri.wf.crawler.Query;
-import pri.wf.crawler.dao.TrainDataDao;
+import pri.wf.crawler.dao.ScheduleDataDao;
+import pri.wf.crawler.dao.TrainListDao;
 import pri.wf.crawler.dto.ResultDto;
 import pri.wf.crawler.dto.ResultQueDto;
 import pri.wf.crawler.dto.ResultQueTrainDto;
@@ -37,7 +38,10 @@ public class ResultService {
 				SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
 				SqlSessionFactory factory = builder.build(reader);
 				SqlSession session = factory.openSession();
-				TrainDataDao trainDataDao=session.getMapper(TrainDataDao.class);
+				TrainListDao trainListDao=session.getMapper(TrainListDao.class);
+				
+				
+				ScheduleDataDao trainDataDao=session.getMapper(ScheduleDataDao.class);
 				List<ResultQueDto> resultQueDtos=resultDto.getData();
 				ModelMapper modelMapper=new ModelMapper();
 				if (resultQueDtos!=null) {

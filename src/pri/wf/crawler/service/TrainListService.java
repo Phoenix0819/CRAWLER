@@ -21,11 +21,13 @@ import org.modelmapper.ModelMapper;
 import pri.wf.crawler.FormatData;
 import pri.wf.crawler.dao.TrainListDao;
 import pri.wf.crawler.dto.ResultDto;
+import pri.wf.crawler.dto.TrainListDataDto;
 import pri.wf.crawler.dto.TrainListDto;
+import pri.wf.crawler.entity.TrainListEntity;
 
 public class TrainListService {
 	private BufferedReader br;
-
+	TrainListDto trainListDto=new TrainListDto();
 	public TrainListDto queryAndFormat(){
 		String jsonFile="./js/train_list_format.json";
 		String charset = "UTF-8";
@@ -44,15 +46,14 @@ public class TrainListService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		TrainListDto trainListDto=new TrainListDto();
+		
 		trainListDto=new FormatData().JsontoObj(jsonBuffer, trainListDto);
-//		ResultDto resultDto=new ResultDto();
-//		resultDto=new FormatData().JsontoObj(resultJson, resultDto);
 		return trainListDto;
 		
 	}
 	
-	public void TrainListAdd(ResultDto resultDto) {
+	public void TrainListAdd() {
+		this.queryAndFormat();
 		String resource = "pri/wf/crawler/config/mybatis-config.xml";
 		Reader reader;
 		try {
@@ -62,31 +63,39 @@ public class TrainListService {
 			SqlSessionFactory factory = builder.build(reader);
 			SqlSession session = factory.openSession();
 			TrainListDao trainListDao=session.getMapper(TrainListDao.class);
-			List<TrainListDto> trainListDtos=new ArrayList<TrainListDto>();
-				//	new FormatData().JsontoObj(jsonUrl, resultSet)
-			
-			ModelMapper modelMapper=new ModelMapper();
-			
-/*			if (resultQueDtos!=null) {
+			List<TrainListDataDto> trainListDataDtos=trainListDto.getData();
+			int sum = 0;
+			if (trainListDataDtos!=null) {
 				
-				//twoStationEntity.setHavetrain(resultDto.getData().size());
-				//twoStationDao.insert(twoStationEntity);
-				
-				for (ResultQueDto resultQueDto : resultQueDtos) {
-					
-					ResultQueTrainDto resultQueTrainDto=resultQueDto.getQueryLeftNewDTO();
-					ScheduleEntity scheduleEntity=modelMapper.map(resultQueTrainDto, ScheduleEntity.class);
-					System.out.println(scheduleEntity.getTrain_no());
-					trainDataDao.insert(scheduleEntity);
-					
-					
+				for (TrainListDataDto trainListDataDto : trainListDataDtos) {
+					sum++;
+					System.out.println(sum+":::"+trainListDataDto.getStation_train_code()+":::"+trainListDataDto.getTrain_no());
+					TrainListEntity trainListEntity=this.dtoToEntity(trainListDataDto);
+					trainListDao.insert(trainListEntity);
 				}
-			}*/			
+			}		
 			session.commit();
 			session.close();
 
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+	}
+
+	private TrainListEntity dtoToEntity(TrainListDataDto trainListDataDto) {
+		TrainListEntity trainListEntity=new TrainListEntity();
+		trainListEntity.setTrain_no(trainListDataDto.getTrain_no());
+		String codeAndName=trainListDataDto.getStation_train_code();
+		
+		String[] code = codeAndName.split("\\(");
+		System.out.println(code[0]+"+++"+code[1]);
+		String names=code[1].replace("\\(", "").replace(")", "");
+		String[] name=names.split("-");
+		
+		trainListEntity.setStation_train_code(code[0]);
+		
+		trainListEntity.setStart_station_name(name[0]);
+		trainListEntity.setEnd_station_name(name[1]);
+		return trainListEntity;
 	}
 }

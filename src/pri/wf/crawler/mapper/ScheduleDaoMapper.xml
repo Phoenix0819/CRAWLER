@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="pri.wf.crawler.dao.TrainDataDao">
+<mapper namespace="pri.wf.crawler.dao.ScheduleDataDao">
 	<insert id="insert" parameterType="pri.wf.crawler.entity.ScheduleEntity">
         insert into  tb_schedule( train_no,station_train_code,start_station_telecode,
         start_station_name,end_station_telecode,end_station_name,from_station_telecode,
