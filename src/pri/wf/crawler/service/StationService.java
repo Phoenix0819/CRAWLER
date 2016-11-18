@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pri.wf.crawler.dto.StationDto;
-import pri.wf.crawler.entity.StationEntity;
 
 public class StationService {
 	public List<StationDto> stationList() {

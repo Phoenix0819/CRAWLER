@@ -1,18 +1,15 @@
 package pri.wf.crawler.dto;
 
+import java.util.List;
+
 public class TrainListDto {
-	private String station_train_code;
-	private String train_no;
-	public String getStation_train_code() {
-		return station_train_code;
+	private List<TrainListDataDto> data;
+
+	public List<TrainListDataDto> getData() {
+		return data;
 	}
-	public void setStation_train_code(String station_train_code) {
-		this.station_train_code = station_train_code;
-	}
-	public String getTrain_no() {
-		return train_no;
-	}
-	public void setTrain_no(String train_no) {
-		this.train_no = train_no;
+
+	public void setData(List<TrainListDataDto> data) {
+		this.data = data;
 	}
 }

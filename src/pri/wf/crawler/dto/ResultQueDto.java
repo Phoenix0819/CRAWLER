@@ -1,8 +1,5 @@
 package pri.wf.crawler.dto;
 
-import java.util.Date;
-import java.util.List;
-
 public class ResultQueDto {
 	private ResultQueTrainDto queryLeftNewDTO;
 
