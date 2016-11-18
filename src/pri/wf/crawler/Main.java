@@ -14,6 +14,7 @@ public class Main {
 		/*String url="https://kyfw.12306.cn/otn/leftTicket/queryX?leftTicketDTO.train_date=2016-11-25&leftTicketDTO.from_station=DLT&leftTicketDTO.to_station=CCT&purpose_codes=ADULT";
 		new ResultService().resultAdd(url);*/
 		TrainListDto trainListDto=new TrainListService().queryAndFormat();
+		@SuppressWarnings("unused")
 		List<TrainListDataDto> list=trainListDto.getData();
 
 		System.out.println(trainListDto.getData().size());

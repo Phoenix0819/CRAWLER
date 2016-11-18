@@ -10,9 +10,7 @@ for(var datekey in train){
 	        var trainData=dateTrain[trainTypeKey];
 	        for(var i=0;i<trainData.length;i++){
 	        	 allTtrainData.push(trainData[i]);
-	            if(allTtrainData.findIndex(k=>k.train_no==trainData[i].train_no)<=0){
-	                allTtrainData.push(trainData[i]);
-	            }
+	            
 	        }
 	    }
     }
