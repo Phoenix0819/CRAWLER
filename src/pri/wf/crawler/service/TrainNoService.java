@@ -31,15 +31,20 @@ public class TrainNoService {
 		List<TrainListEntity> trainListEntities =this.trainListSelectAll();
 		if(!trainListEntities.isEmpty()&&trainListEntities.size()>=0){
 			for (TrainListEntity trainListEntity : trainListEntities) {
-				if (trainListEntity.getFlag()!=1) {
-					TrainNoQueryDto trainNoQueryDto=this.trainListEntToDto(trainListEntity);
-					trainNoQueryDto=this.queryCodeByName(trainNoQueryDto);
-					TrainNoDto trainNoDto=this.queryByTrainNo(trainNoQueryDto);
-					if (trainNoDto!=null) {
-						this.trainNoStationAdd(trainNoDto,trainListEntity);
-					}else {
-						continue;
+				try {
+					if (trainListEntity.getFlag()!=1) {
+						TrainNoQueryDto trainNoQueryDto=this.trainListEntToDto(trainListEntity);
+						trainNoQueryDto=this.queryCodeByName(trainNoQueryDto);
+						TrainNoDto trainNoDto=this.queryByTrainNo(trainNoQueryDto);
+						if (trainNoDto!=null) {
+							this.trainNoStationAdd(trainNoDto,trainListEntity);
+						}else {
+							continue;
+						}
 					}
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		}
