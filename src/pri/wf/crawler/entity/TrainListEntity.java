@@ -5,6 +5,13 @@ public class TrainListEntity {
 	private String train_no;
 	private String start_station_name;
 	private String end_station_name;
+	private int flag;
+	public int getFlag() {
+		return flag;
+	}
+	public void setFlag(int flag) {
+		this.flag = flag;
+	}
 	public String getStart_station_name() {
 		return start_station_name;
 	}

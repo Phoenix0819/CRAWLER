@@ -1,16 +1,17 @@
-package pri.wf.crawler.entity;
+package pri.wf.crawler.dto;
 
-public class StationEntity {
+public class StationDataDto {
+	private int id;
 	private String code;
 	private String name;
 	private String queryCode;
 	private String quanpin;
 	private String jianpin;
-	private String id;
-	public String getId() {
+	private int no;
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getCode() {
@@ -43,6 +44,11 @@ public class StationEntity {
 	public void setJianpin(String jianpin) {
 		this.jianpin = jianpin;
 	}
-
+	public int getNo() {
+		return no;
+	}
+	public void setNo(int no) {
+		this.no = no;
+	}
 	
 }

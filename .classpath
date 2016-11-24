@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="lib/gson-2.8.0.jar" sourcepath="lib/gson-2.8.0-sources.jar"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-6.0.5-bin.jar"/>
 	<classpathentry kind="lib" path="lib/modelmapper-0.7.5.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

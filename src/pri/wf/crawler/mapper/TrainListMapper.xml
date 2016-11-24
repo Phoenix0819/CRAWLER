@@ -8,4 +8,22 @@
         values(#{station_train_code},#{train_no},#{start_station_name},
         #{end_station_name})
     </insert>
+    
+    <resultMap id="trainList" type="pri.wf.crawler.entity.TrainListEntity">
+       <!--  <id column="dp_id" property="dp_id" /> -->
+        <result column="station_train_code" property="station_train_code" />
+        <result column="train_no" property="train_no" />
+        <result column="start_station_name" property="start_station_name" />
+        <result column="end_station_name" property="end_station_name" />
+        <result column="flag" property="flag" />
+    </resultMap>
+
+    <select id="selectAll"  resultMap="trainList" >
+         select station_train_code,train_no,start_station_name,end_station_name,flag from tb_trainlist
+    </select>
+    
+    <update id="updateFlag" parameterType="pri.wf.crawler.entity.TrainListEntity" >
+        update tb_trainlist set flag=#{flag} where station_train_code=#{station_train_code}
+    </update>
+    
 </mapper>

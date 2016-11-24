@@ -3,12 +3,17 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+  <!-- <properties resource="db.properties"></properties> -->
   <environments default="development">
     <environment id="development">
       <transactionManager type="JDBC">
-      	<!-- <property name="closeConnection" value="false"/> -->
+      	<!-- 使用JDBC事务管理 -->
       </transactionManager>
       <dataSource type="POOLED">
+      <!--  <property name="driver" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/> -->
         <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost:3306/PAPER?serverTimezone=UTC&amp;characterEncoding=utf-8&amp;useSSL=true"/>
         <property name="username" value="root"/>
@@ -21,5 +26,6 @@
     <mapper resource="pri/wf/crawler/mapper/ScheduleDaoMapper.xml"/>
     <mapper resource="pri/wf/crawler/mapper/TwoStationDaoMapper.xml"/>
      <mapper resource="pri/wf/crawler/mapper/TrainListMapper.xml"/>
+     <mapper resource="pri/wf/crawler/mapper/TrainNoStaitonMapper.xml"/>
   </mappers>
 </configuration>

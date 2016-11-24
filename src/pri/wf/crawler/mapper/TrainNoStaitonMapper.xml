@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pri.wf.crawler.dao.TrainNoStationDao">
+	<insert id="insert" parameterType="pri.wf.crawler.entity.TrainNoStationEntity">
+        insert into   tb_trainNoStation(
+        start_station_name,arrive_time,station_train_code,station_name,
+        train_class_name,service_type,start_time,stopover_time,end_station_name,
+        station_no,isEnabled) 
+        values(#{start_station_name},#{arrive_time},#{station_train_code},#{station_name},
+        #{train_class_name},#{service_type},#{start_time},#{stopover_time},#{end_station_name},
+         #{station_no},#{isEnabled}
+        )
+
+    </insert>
+</mapper>
