@@ -4,9 +4,9 @@ import com.google.gson.Gson;
 
 public class FormatData {
 	
-	public <V> V JsontoObj(StringBuffer jsonString,V resultSet) {
+	public <V> V JsontoObj(StringBuffer jsonString,Class<V> resultType) {
 		Gson gson = new Gson();
-		resultSet= gson.fromJson(jsonString.toString(), resultSet.getClass());
+		V resultSet= gson.fromJson(jsonString.toString(), resultType);
 		return resultSet;
 	}
 }

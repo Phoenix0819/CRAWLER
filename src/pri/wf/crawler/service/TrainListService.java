@@ -42,7 +42,7 @@ public class TrainListService {
 			e.printStackTrace();
 		}
 		
-		trainListDto=new FormatData().JsontoObj(jsonBuffer, trainListDto);
+		trainListDto=new FormatData().JsontoObj(jsonBuffer, TrainListDto.class);
 		return trainListDto;
 		
 	}

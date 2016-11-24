@@ -21,8 +21,7 @@ import pri.wf.crawler.entity.ScheduleEntity;
 public class ResultService {
 	public ResultDto queryAndFormat(String url){
 		StringBuffer resultJson=new Query().QueryByUrl(url);
-		ResultDto resultDto=new ResultDto();
-		resultDto=new FormatData().JsontoObj(resultJson, resultDto);
+		ResultDto resultDto=new FormatData().JsontoObj(resultJson, ResultDto.class);
 		return resultDto;
 		
 	}

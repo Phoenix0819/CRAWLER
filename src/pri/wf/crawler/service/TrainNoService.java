@@ -32,12 +32,13 @@ public class TrainNoService {
 		if(!trainListEntities.isEmpty()&&trainListEntities.size()>=0){
 			for (TrainListEntity trainListEntity : trainListEntities) {
 				if (trainListEntity.getFlag()!=1) {
-					TrainNoDto trainNoDto=new TrainNoDto();
 					TrainNoQueryDto trainNoQueryDto=this.trainListEntToDto(trainListEntity);
 					trainNoQueryDto=this.queryCodeByName(trainNoQueryDto);
-					trainNoDto=this.queryByTrainNo(trainNoQueryDto);
-					if (trainNoDto.getData()!=null) {
+					TrainNoDto trainNoDto=this.queryByTrainNo(trainNoQueryDto);
+					if (trainNoDto!=null) {
 						this.trainNoStationAdd(trainNoDto,trainListEntity);
+					}else {
+						continue;
 					}
 				}
 			}
@@ -84,19 +85,28 @@ public class TrainNoService {
 				+ "&depart_date=2016-11-25";
 		System.out.println(url);
 		StringBuffer resultJson=new Query().QueryByUrl(url);
-		TrainNoDto trainNoDto=new TrainNoDto();
-		//TODO
-		trainNoDto=new FormatData().JsontoObj(resultJson, trainNoDto);
-		
-		List<TrainNoDataStationDto> trainNoDataStationDtos=trainNoDto.getData().getData();
-		String TrainCode=trainNoDataStationDtos.get(0).getStation_train_code();
-		for (TrainNoDataStationDto trainNoDataStationDto : trainNoDataStationDtos) {
-			if ((trainNoDataStationDto.getStation_train_code()==null)||(trainNoDataStationDto.getStation_train_code().isEmpty())) {
-				trainNoDataStationDto.setStation_train_code(TrainCode);
+		if (resultJson!=null) {
+			TrainNoDto trainNoDto=new TrainNoDto();
+			//TODO
+			trainNoDto=new FormatData().JsontoObj(resultJson, TrainNoDto.class);
+			
+			
+			List<TrainNoDataStationDto> trainNoDataStationDtos=trainNoDto.getData().getData();
+			if (trainNoDataStationDtos!=null&&trainNoDataStationDtos.size()!=0) {
+				String TrainCode=trainNoDataStationDtos.get(0).getStation_train_code();
+				for (TrainNoDataStationDto trainNoDataStationDto : trainNoDataStationDtos) {
+					if ((trainNoDataStationDto.getStation_train_code()==null)||(trainNoDataStationDto.getStation_train_code().isEmpty())) {
+						trainNoDataStationDto.setStation_train_code(TrainCode);
+					}
+				}
+				return trainNoDto;
+			}else {
+				return null;
 			}
+			
+		}else {
+			return null;
 		}
-		
-		return trainNoDto;
 	}
 
 	private TrainNoQueryDto queryCodeByName(TrainNoQueryDto trainNoQueryDto) {
