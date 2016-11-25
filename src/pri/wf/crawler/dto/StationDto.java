@@ -4,14 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StationDto {
-	//String stationName;
 	private List<StationDataDto> stationDataDtos=new ArrayList<>();
-	/*public String getStationName() {
-		return stationName;
-	}
-	public void setStationName(String stationName) {
-		this.stationName = stationName;
-	}*/
 	public List<StationDataDto> getStationDataDtos() {
 		return stationDataDtos;
 	}
@@ -43,7 +36,6 @@ public class StationDto {
 			stationDataDto.setJianpin(temps[4]);
 			stationDataDto.setNo(Integer.parseInt(temps[5]));
 			this.setStationDataDtos(stationDataDto);
-			//this.setStationName(temps[1]);
 		}
 		System.out.println(stationNum);
 	}

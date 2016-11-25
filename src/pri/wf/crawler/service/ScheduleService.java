@@ -12,22 +12,15 @@ import org.modelmapper.ModelMapper;
 
 import pri.wf.crawler.FormatData;
 import pri.wf.crawler.Query;
-import pri.wf.crawler.dao.ScheduleDataDao;
-import pri.wf.crawler.dto.ResultDto;
-import pri.wf.crawler.dto.ResultQueDto;
-import pri.wf.crawler.dto.ResultQueTrainDto;
+import pri.wf.crawler.dao.ScheduleDao;
+import pri.wf.crawler.dto.ScheduleDto;
+import pri.wf.crawler.dto.ScheduleQueDto;
+import pri.wf.crawler.dto.ScheduleQueTrainDto;
 import pri.wf.crawler.entity.ScheduleEntity;
 
-public class ResultService {
-	public ResultDto queryAndFormat(String url){
-		StringBuffer resultJson=new Query().QueryByUrl(url);
-		ResultDto resultDto=new FormatData().JsontoObj(resultJson, ResultDto.class);
-		return resultDto;
-		
-	}
-	
-	public void resultAdd(String url) {
-		ResultDto resultDto=this.queryAndFormat(url);
+public class ScheduleService {
+	public void scheduleAdd(String url) {
+		ScheduleDto resultDto=this.queryAndFormat(url);
 		if (resultDto!=null) {
 			String resource = "pri/wf/crawler/config/mybatis-config.xml";
 			Reader reader;
@@ -36,27 +29,28 @@ public class ResultService {
 				SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
 				SqlSessionFactory factory = builder.build(reader);
 				SqlSession session = factory.openSession();
-				//TrainListDao trainListDao=session.getMapper(TrainListDao.class);
-				
-				
-				ScheduleDataDao trainDataDao=session.getMapper(ScheduleDataDao.class);
-				List<ResultQueDto> resultQueDtos=resultDto.getData();
+				ScheduleDao trainDataDao=session.getMapper(ScheduleDao.class);
+				List<ScheduleQueDto> resultQueDtos=resultDto.getData();
 				ModelMapper modelMapper=new ModelMapper();
 				if (resultQueDtos!=null) {
-					for (ResultQueDto resultQueDto : resultQueDtos) {
-						ResultQueTrainDto resultQueTrainDto=resultQueDto.getQueryLeftNewDTO();
+					for (ScheduleQueDto resultQueDto : resultQueDtos) {
+						ScheduleQueTrainDto resultQueTrainDto=resultQueDto.getQueryLeftNewDTO();
 						ScheduleEntity scheduleEntity=modelMapper.map(resultQueTrainDto, ScheduleEntity.class);
-//						System.out.println(scheduleEntity.getTrain_no());
 						trainDataDao.insert(scheduleEntity);
 					}
 				}			
 				session.commit();
 				session.close();
-
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
 		}
+	}
+	
+	public ScheduleDto queryAndFormat(String url){
+		StringBuffer resultJson=new Query().QueryByUrl(url);
+		ScheduleDto resultDto=new FormatData().JsontoObj(resultJson, ScheduleDto.class);
+		return resultDto;
 		
 	}
 	

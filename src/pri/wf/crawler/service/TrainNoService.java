@@ -26,8 +26,7 @@ import pri.wf.crawler.entity.TrainNoStationEntity;
 public class TrainNoService {
 	List<StationDataDto> stationDataDtos=new StationDto().getStationDataDtos();
 	
-	public void TrainNoAdd() {
-		
+	public void trainNoAdd() {
 		List<TrainListEntity> trainListEntities =this.trainListSelectAll();
 		if(!trainListEntities.isEmpty()&&trainListEntities.size()>=0){
 			for (TrainListEntity trainListEntity : trainListEntities) {
@@ -43,7 +42,6 @@ public class TrainNoService {
 						}
 					}
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -65,7 +63,6 @@ public class TrainNoService {
 					TrainNoStationEntity trainNoStationEntity=modelMapper.map(trainNoStationDto, TrainNoStationEntity.class);
 					System.out.println(trainNoStationEntity.getStation_no());
 					trainNoDao.insert(trainNoStationEntity);
-					//TODO
 				}
 			}
 			trainListEntity.setFlag(1);
@@ -92,10 +89,7 @@ public class TrainNoService {
 		StringBuffer resultJson=new Query().QueryByUrl(url);
 		if (resultJson!=null) {
 			TrainNoDto trainNoDto=new TrainNoDto();
-			//TODO
 			trainNoDto=new FormatData().JsontoObj(resultJson, TrainNoDto.class);
-			
-			
 			List<TrainNoDataStationDto> trainNoDataStationDtos=trainNoDto.getData().getData();
 			if (trainNoDataStationDtos!=null&&trainNoDataStationDtos.size()!=0) {
 				String TrainCode=trainNoDataStationDtos.get(0).getStation_train_code();
@@ -108,14 +102,12 @@ public class TrainNoService {
 			}else {
 				return null;
 			}
-			
 		}else {
 			return null;
 		}
 	}
 
 	private TrainNoQueryDto queryCodeByName(TrainNoQueryDto trainNoQueryDto) {
-		
 		int flag=0;
 		for (StationDataDto stationDataDto : stationDataDtos) {
 			if(flag<2){
@@ -142,11 +134,9 @@ public class TrainNoService {
 		}
 		return trainNoQueryDto;
 	}
-
 	
 	public List<TrainListEntity> trainListSelectAll() {
 		List<TrainListEntity> trainListEntities=new ArrayList<>();
-		
 		String resource = "pri/wf/crawler/config/mybatis-config.xml";
 		Reader reader;
 		try {
@@ -155,7 +145,6 @@ public class TrainNoService {
 			SqlSessionFactory factory = builder.build(reader);
 			SqlSession session = factory.openSession();
 			TrainListDao trainListDao=session.getMapper(TrainListDao.class);
-			
 			trainListEntities= trainListDao.selectAll();
 			session.commit();
 			session.close();

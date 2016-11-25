@@ -15,7 +15,7 @@ public class Main {
 		new ResultService().resultAdd(url);*/
 		long start=System.currentTimeMillis();
 		System.out.println("start"+start);
-		new TrainNoService().TrainNoAdd();
+		new TrainNoService().trainNoAdd();
 		long end=System.currentTimeMillis();
 		System.out.println("Total Time:" + (end - start) + "s");
 		
@@ -24,6 +24,6 @@ public class Main {
 	
 	public static void TrainListStore() {
 		TrainListService trianListService=new TrainListService();
-		trianListService.TrainListAdd();
+		trianListService.trainListAdd();
 	}
 }

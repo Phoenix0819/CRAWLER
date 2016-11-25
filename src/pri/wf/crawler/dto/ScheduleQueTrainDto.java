@@ -1,6 +1,6 @@
 package pri.wf.crawler.dto;
 
-public class ResultQueTrainDto {
+public class ScheduleQueTrainDto {
 	private String train_no;
 	private String station_train_code;
 	private String start_station_telecode;
